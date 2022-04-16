@@ -3,14 +3,14 @@ from django.shortcuts import get_object_or_404
 from rest_framework import filters, permissions, viewsets
 from rest_framework.pagination import LimitOffsetPagination
 
-from yatube_api.api.permissions import IsAuthorOrReadOnlyPermission
-from yatube_api.api.serializers import (
+from posts.models import Comment, Follow, Group, Post, User
+from .permissions import IsAuthorOrReadOnlyPermission
+from .serializers import (
     CommentSerializer,
     FollowSerializer,
     GroupSerializer,
     PostSerializer,
 )
-from yatube_api.posts.models import Comment, Follow, Group, Post, User
 
 
 class PostViewSet(viewsets.ModelViewSet):
