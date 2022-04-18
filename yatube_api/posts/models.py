@@ -9,8 +9,8 @@ class Group(models.Model):
     slug = models.SlugField(unique=True)
     description = models.TextField()
 
-    def __str__(self):
-        return self.title
+    def __str__(self) -> str:
+        return Group.self.kwargs["pk"]
 
 
 class Post(models.Model):
@@ -28,7 +28,7 @@ class Post(models.Model):
         null=True,
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.text
 
 
@@ -43,6 +43,9 @@ class Comment(models.Model):
     created = models.DateTimeField(
         "Дата добавления", auto_now_add=True, db_index=True
     )
+
+    def __str__(self) -> str:
+        return self.text
 
 
 class Follow(models.Model):
@@ -59,9 +62,16 @@ class Follow(models.Model):
         verbose_name="Автор",
     )
 
+    def __str__(self) -> str:
+        return self.user.username
+
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["user", "following"], name="unique following"
-            )
+                fields=["user", "following"], name="unique_following"
+            ),
+            models.CheckConstraint(
+                name="prevent_self_follow",
+                check=~models.Q(user=models.F("following")),
+            ),
         ]
