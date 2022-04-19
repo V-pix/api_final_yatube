@@ -10,7 +10,7 @@ class Group(models.Model):
     description = models.TextField()
 
     def __str__(self) -> str:
-        return Group.self.kwargs["pk"]
+        return Group(title=self.title, slug=self.slug)
 
 
 class Post(models.Model):
@@ -29,7 +29,7 @@ class Post(models.Model):
     )
 
     def __str__(self) -> str:
-        return self.text
+        return Post(text=self.text, pk=self.pk)
 
 
 class Comment(models.Model):
@@ -45,7 +45,7 @@ class Comment(models.Model):
     )
 
     def __str__(self) -> str:
-        return self.text
+        return Comment(text=self.text, post=self.post, pk=self.pk)
 
 
 class Follow(models.Model):
@@ -62,9 +62,6 @@ class Follow(models.Model):
         verbose_name="Автор",
     )
 
-    def __str__(self) -> str:
-        return self.user.username
-
     class Meta:
         constraints = [
             models.UniqueConstraint(
@@ -75,3 +72,6 @@ class Follow(models.Model):
                 check=~models.Q(user=models.F("following")),
             ),
         ]
+
+    def __str__(self) -> str:
+        return Follow(user=self.user.username)
