@@ -10,7 +10,7 @@ class Group(models.Model):
     description = models.TextField()
 
     def __str__(self) -> str:
-        return Group(title=self.title, slug=self.slug)
+        return f"{self.title}, {self.slug}"
 
 
 class Post(models.Model):
@@ -29,7 +29,7 @@ class Post(models.Model):
     )
 
     def __str__(self) -> str:
-        return Post(text=self.text, pk=self.pk)
+        return f"{self.text}, {self.author}, {self.pk}"
 
 
 class Comment(models.Model):
@@ -45,7 +45,7 @@ class Comment(models.Model):
     )
 
     def __str__(self) -> str:
-        return Comment(text=self.text, post=self.post, pk=self.pk)
+        return f"{self.text}, {self.author}, {self.post.id}"
 
 
 class Follow(models.Model):
@@ -74,4 +74,4 @@ class Follow(models.Model):
         ]
 
     def __str__(self) -> str:
-        return Follow(user=self.user.username)
+        return f"{self.user}, {self.following}"
